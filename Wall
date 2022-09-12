@@ -1,5 +1,5 @@
 
-local ESP = {
+local Settings = {
     TextColor = Color3.fromRGB(255,255,255),
     EquippedColor = Color3.fromRGB(255,255,255),
     DistanceColor = Color3.fromRGB(255,255,255),
