@@ -57,9 +57,9 @@ function ESP:GetTeam(p)
 	end
 	
 	return p and p.Team
-end]]--
+end]]
 
---[[
+
 function ESP:IsTeamMate(p)
     local ov = self.Overrides.IsTeamMate
 	if ov then
@@ -67,7 +67,7 @@ function ESP:IsTeamMate(p)
     end
     
     return self:GetTeam(p) == self:GetTeam(plr)
-end]]--
+end
 
 function ESP:GetColor(obj)
 	local ov = self.Overrides.GetColor
@@ -76,7 +76,7 @@ function ESP:GetColor(obj)
     end
     local p = self:GetPlrFromChar(obj)
 	return p and self.TeamColor and p.Team and p.Team.TeamColor.Color or self.Color
-end
+end--]]
 
 function ESP:GetPlrFromChar(char)
 	local ov = self.Overrides.GetPlrFromChar
