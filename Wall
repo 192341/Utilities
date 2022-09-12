@@ -57,7 +57,7 @@ function ESP:GetTeam(p)
 	end
 	
 	return p and p.Team
-end]]
+end
 
 
 function ESP:IsTeamMate(p)
