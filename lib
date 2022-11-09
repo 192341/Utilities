@@ -1,5 +1,6 @@
---Splix Ui--
--- // Variables
+
+-- // Variables \\ --
+
 local ws = game:GetService("Workspace")
 local uis = game:GetService("UserInputService")
 local rs = game:GetService("RunService")
@@ -8,7 +9,7 @@ local ts = game:GetService("TweenService")
 local plrs = game:GetService("Players")
 local stats = game:GetService("Stats")
 local mservice = game:GetService("MarketplaceService")
--- UI Variables
+-- UI Variables --
 local library = {
     drawings = {},
     hidden = {},
@@ -19,7 +20,7 @@ local library = {
     ended = {},
     changed = {},
     folders = {
-        assets = "Oneshot/assets",
+        assets = "avonhook/assets",
     },
     shared = {
         initialized = false,
@@ -27,24 +28,28 @@ local library = {
         ping = 0
     }
 }
---tab
+
+--
+
 local utility = {}
 local pages = {}
 local sections = {}
 -- Theme Variables
 local themes = {}
 local theme = {
-    accent = Color3.fromRGB(60,179,113),
-    light_contrast = Color3.fromRGB(28, 28, 28),
+    accent = Color3.fromRGB(70,130,180),
+    light_contrast = Color3.fromRGB(35, 35, 35),
     dark_contrast = Color3.fromRGB(20, 20, 20),
     outline = Color3.fromRGB(0, 0, 0),
     inline = Color3.fromRGB(50, 50, 50),
     textcolor = Color3.fromRGB(255, 255, 255),
     textborder = Color3.fromRGB(0, 0, 0),
-    cursoroutline = Color3.fromRGB(20, 20, 20),
+    cursoroutline = Color3.fromRGB(10, 10, 10),
     font = 2,
     textsize = 13,
+    UiBind = Enum.KeyCode.RightControl
 }
+
 
 
 
@@ -57,7 +62,7 @@ do
             --
             return Vector2.new(x,y)
         else
-            local vx,vy = ws.CurrentCamera.ViewportSize.x,ws.CurrentCamera.ViewportSize.y
+            local vx,vy = ws.Camera.ViewportSize.x, ws.Camera.ViewportSize.y
             --
             local x = xScale*vx+xOffset
             local y = yScale*vy+yOffset
@@ -96,7 +101,7 @@ do
             --
             return Vector2.new(x,y)
         else
-            local vx,vy = ws.CurrentCamera.ViewportSize.x,ws.CurrentCamera.ViewportSize.y
+            local vx,vy = ws.Camera.ViewportSize.x,ws.Camera.ViewportSize.y
             --
             local x = xScale*vx+xOffset
             local y = yScale*vy+yOffset
@@ -316,7 +321,7 @@ do
     end
     --
     function utility:GetScreenSize()
-        return ws.CurrentCamera.ViewportSize
+        return ws.Camera.ViewportSize
     end
     --
     function utility:LoadImage(instance, imageName, imageLink)
@@ -388,14 +393,14 @@ do
     --
     function library:New(info)
 	local info = info or {}
-        local name = info.name or info.Name or "oneshot"
-        local title = info.title or info.Title or "oneshot"
+        local name = info.name or info.Name or "avonhook"
+        local title = info.title or info.Title or "avonhook"
         local size = info.size or info.Size or Vector2.new(504,604)
         local accent = info.accent or info.Accent or info.color or info.Color or theme.accent
         --
         theme.accent = accent
         --
-        local window = {pages = {}, name = name, title = title, isVisible = false, uibind = Enum.KeyCode.RightControl, currentPage = nil, fading = false, dragging = false, drag = Vector2.new(0,0), currentContent = {frame = nil, dropdown = nil, multibox = nil, colorpicker = nil, keybind = nil, textbox = nil}}
+        local window = {pages = {}, name = name, title = title, isVisible = false, uibind = theme.UiBind, currentPage = nil, fading = false, dragging = false, drag = Vector2.new(0,0), currentContent = {frame = nil, dropdown = nil, multibox = nil, colorpicker = nil, keybind = nil, textbox = nil}}
         --
         local main_frame = utility:Create("Frame", {Vector2.new(0,0)}, {
             Size = utility:Size(0, size.X, 0, size.Y),
@@ -562,7 +567,7 @@ do
             if window.currentContent.dropdown and window.currentContent.dropdown.open then
                 local dropdown = window.currentContent.dropdown
                 dropdown.open = not dropdown.open
-                utility:LoadImage(dropdown.dropdown_image, "dropdown_down", "https://i.ibb.co/J5hz1cS/Minus-Icon.png")
+                utility:LoadImage(dropdown_image, "arrow_down", "https://i.imgur.com/tVqy0nL.png")
                 --
                 for i,v in pairs(dropdown.holder.drawings) do
                     utility:Remove(v)
@@ -577,7 +582,7 @@ do
             elseif window.currentContent.multibox and window.currentContent.multibox.open then
                 local multibox = window.currentContent.multibox
                 multibox.open = not multibox.open
-                utility:LoadImage(multibox.multibox_image, "dropdown_down", "https://i.ibb.co/J5hz1cS/Minus-Icon.png")
+                utility:LoadImage(dropdown_image, "arrow_down", "https://i.imgur.com/tVqy0nL.png")
                 --
                 for i,v in pairs(multibox.holder.drawings) do
                     utility:Remove(v)
@@ -778,7 +783,7 @@ do
             --
             spawn(function()
                 while wait(0.1) do
-                    watermark_title.Text = string.format("oneshot | public build | Ping : " .. tostring(library.shared.ping) .. "ms | FPS : " .. tostring(library.shared.fps), window.name)
+                    watermark_title.Text = string.format("avonhook | public build | Ping : " .. tostring(library.shared.ping) .. "ms | FPS : " .. tostring(library.shared.fps), window.name)
                     window.watermark:UpdateSize()
                 end
             end)
@@ -1149,7 +1154,7 @@ do
                 end
             end
             --
-            utility:Connection(ws.CurrentCamera:GetPropertyChangedSignal("ViewportSize"),function()
+            utility:Connection(ws.Camera:GetPropertyChangedSignal("ViewportSize"),function()
                 keybindslist_outline.Position = utility:Position(0, 10, 0.4, 0)
                 keybindslist_inline.Position = utility:Position(0, 1, 0, 1, keybindslist_outline)
                 keybindslist_frame.Position = utility:Position(0, 1, 0, 1, keybindslist_inline)
@@ -1298,7 +1303,7 @@ do
             end
         end)
         --
-        utility:Connection(ws.CurrentCamera:GetPropertyChangedSignal("ViewportSize"),function()
+        utility:Connection(ws.Camera:GetPropertyChangedSignal("ViewportSize"),function()
             window:Move(Vector2.new((utility:GetScreenSize().X/2) - (size.X/2), (utility:GetScreenSize().Y/2) - (size.Y/2)))
         end)
         --
@@ -2925,7 +2930,7 @@ do
             Visible = page.open
         }, section.visibleContent);dropdown["dropdown_image"] = dropdown_image
         --
-        utility:LoadImage(dropdown_image, "dropdown_down", "https://i.ibb.co/kyD8ZgK/Splix-Minus-Icon.png")
+        utility:LoadImage(dropdown_image, "arrow_down", "https://i.imgur.com/tVqy0nL.png")
         utility:LoadImage(dropdown__gradient, "gradient", "https://i.imgur.com/5hmlrjX.png")
         --
         function dropdown:Update()
@@ -2976,7 +2981,7 @@ do
                     if not dropdown.open then
                         window:CloseContent()
                         dropdown.open = not dropdown.open
-                        utility:LoadImage(dropdown_image, "dropdown_up", "https://i.ibb.co/kyD8ZgK/Splix-Minus-Icon.png")
+                        utility:LoadImage(dropdown_image, "arrow_up", "https://i.imgur.com/SL9cbQp.png")
                         --
                         local dropdown_open_outline = utility:Create("Frame", {Vector2.new(0,19), dropdown_outline}, {
                             Size = utility:Size(1, 0, 0, 3 + (#options * 19), dropdown_outline),
@@ -3016,7 +3021,7 @@ do
                         dropdown:Update()
                     else
                         dropdown.open = not dropdown.open
-                        utility:LoadImage(dropdown_image, "dropdown_down", "https://i.ibb.co/J5hz1cS/Minus-Icon.png")
+                        utility:LoadImage(dropdown_image, "arrow_down", "https://i.imgur.com/tVqy0nL.png")
                         --
                         for i,v in pairs(dropdown.holder.drawings) do
                             utility:Remove(v)
@@ -3032,7 +3037,7 @@ do
                 else
                     if dropdown.open then
                         dropdown.open = not dropdown.open
-                        utility:LoadImage(dropdown_image, "dropdown_down", "https://i.ibb.co/J5hz1cS/Minus-Icon.png")
+                        utility:LoadImage(dropdown_image, "arrow_down", "https://i.imgur.com/tVqy0nL.png")
                         --
                         for i,v in pairs(dropdown.holder.drawings) do
                             utility:Remove(v)
@@ -3048,7 +3053,7 @@ do
                 end
             elseif Input.UserInputType == Enum.UserInputType.MouseButton1 and dropdown.open then
                 dropdown.open = not dropdown.open
-                utility:LoadImage(dropdown_image, "dropdown_down", "https://i.ibb.co/J5hz1cS/Minus-Icon.png")
+                utility:LoadImage(dropdown_image, "arrow_down", "https://i.imgur.com/tVqy0nL.png")
                 --
                 for i,v in pairs(dropdown.holder.drawings) do
                     utility:Remove(v)
@@ -3153,7 +3158,7 @@ do
             Visible = page.open
         }, section.visibleContent);multibox["multibox_image"] = multibox_image
         --
-        utility:LoadImage(multibox_image, "dropdown_down", "https://i.ibb.co/J5hz1cS/Minus-Icon.png")
+        utility:LoadImage(multibox_image, "dropdown_down", "https://i.ibb.co/CMMHc5Q/arrow-pointing-up.png")
         utility:LoadImage(multibox__gradient, "gradient", "https://i.imgur.com/5hmlrjX.png")
         --
         function multibox:Update()
@@ -3223,7 +3228,7 @@ do
                     if not multibox.open then
                         window:CloseContent()
                         multibox.open = not multibox.open
-                        utility:LoadImage(multibox_image, "dropdown_up", "https://i.ibb.co/YhxRmfm/Plus-Icon.png")
+                        
                         --
                         local multibox_open_outline = utility:Create("Frame", {Vector2.new(0,19), multibox_outline}, {
                             Size = utility:Size(1, 0, 0, 3 + (#options * 19), multibox_outline),
@@ -3271,7 +3276,7 @@ do
                         window.currentContent.multibox = multibox
                     else
                         multibox.open = not multibox.open
-                        utility:LoadImage(multibox_image, "dropdown_down", "https://i.ibb.co/J5hz1cS/Minus-Icon.png")
+                        utility:LoadImage(multibox_image, "dropdown_down", "https://i.ibb.co/CMMHc5Q/arrow-pointing-down.png")
                         --
                         for i,v in pairs(multibox.holder.drawings) do
                             utility:Remove(v)
@@ -3287,7 +3292,7 @@ do
                 else
                     if multibox.open then
                         multibox.open = not multibox.open
-                        utility:LoadImage(multibox_image, "dropdown_down", "https://i.ibb.co/J5hz1cS/Minus-Icon.png")
+                        utility:LoadImage(multibox_image, "dropdown_down", "https://i.ibb.co/CMMHc5Q/arrow-pointing-down.png")
                         --
                         for i,v in pairs(multibox.holder.drawings) do
                             utility:Remove(v)
@@ -3303,7 +3308,7 @@ do
                 end
             elseif Input.UserInputType == Enum.UserInputType.MouseButton1 and multibox.open then
                 multibox.open = not multibox.open
-                utility:LoadImage(multibox_image, "dropdown_down", "https://i.ibb.co/J5hz1cS/Minus-Icon.png")
+                utility:LoadImage(multibox_image, "dropdown_down", "https://i.ibb.co/CMMHc5Q/arrow-pointing-down.png")
                 --
                 for i,v in pairs(multibox.holder.drawings) do
                     utility:Remove(v)
@@ -4483,4 +4488,4 @@ do
         return configLoader
     end
 end
-return library
+return library, utility, library.pointers, theme
