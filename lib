@@ -20,9 +20,9 @@ local library = {
     ended = {},
     colors = {},
     folders = {
-        main = "r3zkoclient",
-        assets = "r3zkoclient/assets",
-        configs = "r3zkoclient/configs"
+        main = "avon",
+        assets = avon/assets",
+        configs = "avon/configs"
     },
     shared = {
         initialized = false,
