@@ -18,7 +18,7 @@ local library = {
     colors = {},
     folders = {
         main = "avon",
-        assets = avon/assets",
+        assets = "avon/assets",
         configs = "avon/configs"
     },
     shared = {
