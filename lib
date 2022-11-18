@@ -36,7 +36,7 @@ local utility = {}
 local pages = {}
 local sections = {}
 local theme = {
-    accent = Color3.fromRGB(55, 175, 225),
+    accent = Color3.fromRGB(70,130,180),
     lightcontrast = Color3.fromRGB(30, 30, 30),
     darkcontrast = Color3.fromRGB(25, 25, 25),
     outline = Color3.fromRGB(0, 0, 0),
@@ -5647,7 +5647,7 @@ do
         --
         library.colors[configLoader_inline] = {
             Color = "inline"
-        } -- im being abused, help me please - taskmanager
+        }
         --
         local configLoader_frame = utility:Create("Frame", {Vector2.new(1,1), configLoader_inline}, {
             Size = utility:Size(1, -2, 1, -2, configLoader_inline),
