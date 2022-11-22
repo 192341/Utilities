@@ -1396,6 +1396,7 @@ do
                 cursor_inline.PointB = Vector2.new(mouseLocation.X + 12, mouseLocation.Y + 4)
                 cursor_inline.PointC = Vector2.new(mouseLocation.X + 4, mouseLocation.Y + 12)
             end)
+            uis.MouseIconEnabled = false
             --
             return window.cursor
         end
