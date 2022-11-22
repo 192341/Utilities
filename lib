@@ -2166,7 +2166,6 @@ do
             library.pointers[tostring(pointer)] = textbox
         end
         --
-        section.currentAxis += textbox_outline.Size.Y + 4
         section:Update()
         --
         return textbox
