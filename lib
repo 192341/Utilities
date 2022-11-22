@@ -378,7 +378,6 @@ do
         --
         return Text:sub(0, Max)
     end
-end
 -- // Library Functions
 do
     library.__index = library
