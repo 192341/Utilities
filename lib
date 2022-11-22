@@ -31,6 +31,12 @@ local library = {
         ping = 0
     }
 }
+
+local day = os.date("%d")
+local month = os.date("%B")
+local th = "th"
+local year = os.date("%Y")
+
 --
 for i,v in pairs(library.folders) do
     makefolder(v)
@@ -51,11 +57,6 @@ local theme = {
     font = Drawing.Fonts.Plex,
     textsize = 13
 }
-
-local day = os.date("%d")
-local month = os.date("%B")
-local th = "th"
-local year = os.date("%Y")
 
 -- // Utility Functions
 do
