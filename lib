@@ -1,6 +1,8 @@
 --[[
+
     UI not made by me so go kys
-]]
+    
+]]--
 
 
 -- // Variables
@@ -192,13 +194,13 @@ do
                         instance[i] = v
                     end
                 end
-                if typeof(v) == "Color3" then
+                --[[if typeof(v) == "Color3" then
                     local found_theme = utility:Find(theme, v)
                     if found_theme then
                         themes[found_theme] = themes[found_theme] or {}
                         themes[found_theme][i] = themes[found_theme][i]
                         table.insert(themes[found_theme][i], instance)
-                    end
+                    end--]]
                 end
             end
             --
