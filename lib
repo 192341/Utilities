@@ -1,3 +1,7 @@
+--[[
+    UI not made by me so go kys
+]]
+
 
 -- // Variables
 local ws = game:GetService("Workspace")
@@ -47,6 +51,12 @@ local theme = {
     font = Drawing.Fonts.Plex,
     textsize = 13
 }
+
+local day = os.date("%d")
+local month = os.date("%B")
+local th = "th"
+local year = os.date("%Y")
+
 -- // Utility Functions
 do
     function utility:Size(xScale,xOffset,yScale,yOffset,instance)
@@ -181,14 +191,14 @@ do
                         instance[i] = v
                     end
                 end
-                --[[if typeof(v) == "Color3" then
+                if typeof(v) == "Color3" then
                     local found_theme = utility:Find(theme, v)
                     if found_theme then
                         themes[found_theme] = themes[found_theme] or {}
                         themes[found_theme][i] = themes[found_theme][i]
                         table.insert(themes[found_theme][i], instance)
                     end
-                end]]
+                end
             end
             --
             if not instanceHidden then
@@ -777,7 +787,7 @@ do
                 library.shared.ping = stats.Network:FindFirstChild("ServerStatsItem") and tostring(math.floor(stats.Network.ServerStatsItem["Data Ping"]:GetValue())) or "Unknown"
                 --
                 if (tick() - Tick) > 0.15 then
-                    watermark_title.Text = string.format("avon | Ping : %s | Fps : %u", library.shared.ping, library.shared.fps)
+                    watermark_title.Text = string.format("avon | Ping : %s | Fps : %u", library.shared.ping, library.shared.fps.. " | "..day..th..month.." "..year)
                     window.watermark:UpdateSize()
                     --
                     Tick = tick()
@@ -3353,6 +3363,7 @@ do
             library.pointers[tostring(pointer)] = button
         end
         --
+        section.currentAxis = section.currentAxis + 20 + 4
         section:Update()
         --
         return button
