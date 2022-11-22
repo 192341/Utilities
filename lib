@@ -3353,7 +3353,6 @@ do
             library.pointers[tostring(pointer)] = button
         end
         --
-        section.currentAxis = section.currentAxis + 20 + 4
         section:Update()
         --
         return button
