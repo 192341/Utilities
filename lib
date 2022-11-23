@@ -1616,16 +1616,16 @@ do
         --
         local page = {open = false, sections = {}, sectionOffset = {left = 0, right = 0}, window = window}
         --
-        local position = 4
+        local position = 3
         --
         for i,v in pairs(window.pages) do
-            position = position + (v.page_button.Size.X + 4)
+            position = position + (v.page_button.Size.X + 1)
         end
         --
         local textbounds = utility:GetTextBounds(name, theme.textsize, theme.font)
         --
         local page_button = utility:Create("Frame", {Vector2.new(position,4), window.back_frame}, {
-            Size = utility:Size(0, info.size or textbounds.X+20, 0, 21),
+            Size = utility:Size(0, info.size or textbounds.X + 20, 0, 21),
             Position = utility:Position(0, position, 0, 4, window.back_frame),
             Color = theme.outline
         });page["page_button"] = page_button
