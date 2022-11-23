@@ -673,7 +673,7 @@ do
             window.watermark = {visible = false}
             --
             local info = info or {}
-            local watermark_name = info.name or info.Name or info.title or info.Title
+            local watermark_name = info.name or info.Name or info.title or info.Title or "avon | Ping : %s | Fps : %u", library.shared.ping, library.shared.fps.. " | "..day..th..month.." "..year
             --
             local text_bounds = utility:GetTextBounds(watermark_name, theme.textsize, theme.font)
             --
@@ -730,7 +730,7 @@ do
             }
             --
             local watermark_title = utility:Create("TextLabel", {Vector2.new(2 + 6,4), watermark_outline}, {
-                Text = string.format("avon | Ping : %s | Fps : %u", library.shared.ping, library.shared.fps.. " | "..day..th..month.." "..year),
+                Text = "avon | Ping : %s | Fps : %u", library.shared.ping, library.shared.fps.. " | "..day..th..month.." "..year,
                 Size = theme.textsize,
                 Font = theme.font,
                 Color = theme.textcolor,
@@ -789,7 +789,7 @@ do
                 library.shared.ping = stats.Network:FindFirstChild("ServerStatsItem") and tostring(math.floor(stats.Network.ServerStatsItem["Data Ping"]:GetValue())) or "Unknown"
                 --
                 if (tick() - Tick) > 0.15 then
-                    watermark_title.Text = string.format("avon | Ping : %s | Fps : %u", library.shared.ping, library.shared.fps.. " | "..day..th..month.." "..year)
+                    watermark_title.Text = "avon | Ping : %s | Fps : %u", library.shared.ping, library.shared.fps.. " | "..day..th..month.." "..year
                     window.watermark:UpdateSize()
                     --
                     Tick = tick()
