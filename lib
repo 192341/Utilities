@@ -673,7 +673,7 @@ do
             window.watermark = {visible = false}
             --
             local info = info or {}
-            local watermark_name = info.name or info.Name or info.title or info.Title or string.format("avon | Ping : %s | Fps : %u", library.shared.ping, library.shared.fps.. " | "..day..th..month.." "..year)
+            local watermark_name = info.name or info.Name or info.title or info.Title
             --
             local text_bounds = utility:GetTextBounds(watermark_name, theme.textsize, theme.font)
             --
