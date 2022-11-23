@@ -1619,7 +1619,7 @@ do
         local position = 4
         --
         for i,v in pairs(window.pages) do
-            position = position + (v.page_button.Size.X + 1)
+            position = position + (v.page_button.Size.X + 4)
         end
         --
         local textbounds = utility:GetTextBounds(name, theme.textsize, theme.font)
