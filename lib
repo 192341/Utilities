@@ -730,7 +730,7 @@ do
             }
             --
             local watermark_title = utility:Create("TextLabel", {Vector2.new(2 + 6,4), watermark_outline}, {
-                Text = "avon | Ping : %s | Fps : %u", library.shared.ping, library.shared.fps.. " | "..day..th..month.." "..year,
+                Text = tostring("avon | Ping : %s | Fps : %u", library.shared.ping, library.shared.fps.. " | "..day..th..month.." "..year),
                 Size = theme.textsize,
                 Font = theme.font,
                 Color = theme.textcolor,
