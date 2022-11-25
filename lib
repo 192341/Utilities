@@ -1873,7 +1873,7 @@ do
         }
         --
         local multiSection_accent = utility:Create("Frame", {Vector2.new(0,0), multiSection_frame}, {
-            Size = utility:Size(1, 0, 0, 2, multiSection_frame),
+            Size = utility:Size(1, 0, 0, 1, multiSection_frame),
             Position = utility:Position(0, 0, 0, 0, multiSection_frame),
             Color = theme.accent,
             Visible = page.open
