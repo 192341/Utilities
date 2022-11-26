@@ -1654,7 +1654,7 @@ do
             Color = "darkcontrast"
         }
         --
-        local page_accent = utility:Create("Frame", {Vector2.new(0,0), multiSection_frame}, {
+        local page_accent = utility:Create("Frame", {Vector2.new(0,0), page_button}, {
             Size = utility:Size(1, 0, 0, 1, page_button),
             Position = utility:Position(0, 0, 0, 0, page_button),
             Color = theme.accent,
