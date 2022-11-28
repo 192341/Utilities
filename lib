@@ -1654,12 +1654,6 @@ do
             Color = "darkcontrast"
         }
         --
-        local page_accent = utility:Create("Frame", {Vector2.new(0,0), page_button}, {
-            Size = utility:Size(1, 0, 0, 1, page_button),
-            Position = utility:Position(0, 0, 0, 0, page_button),
-            Color = theme.accent,
-            Visible = page.open
-        });page["section_accent"] = page_accent
         --
         library.colors[page_accent] = {
             Color = "accent"
@@ -2321,11 +2315,6 @@ do
             local hh, ss, vv = def:ToHSV()
             local colorpicker = {toggle, axis = toggle.axis, index = toggle.colorpickers, current = {hh, ss, vv , (transp or 0)}, holding = {picker = false, huepicker = false, transparency = false}, holder = {inline = nil, picker = nil, picker_cursor = nil, huepicker = nil, huepicker_cursor = {}, transparency = nil, transparencybg = nil, transparency_cursor = {}, drawings = {}}}
             --
-            function colorpicker:set_callback(c)
-                callback = c
-                callback(self:get())
-            end
-            --
             local colorpicker_outline = utility:Create("Frame", {Vector2.new(section.section_frame.Size.X-(toggle.colorpickers == 0 and (30+4) or (64 + 4)),colorpicker.axis), section.section_frame}, {
                 Size = utility:Size(0, 30, 0, 15),
                 Position = utility:Position(1, -(toggle.colorpickers == 0 and (30+4) or (64 + 4)), 0, colorpicker.axis, section.section_frame),
@@ -2333,20 +2322,12 @@ do
                 Visible = page.open
             }, section.visibleContent)
             --
-            library.colors[colorpicker_outline] = {
-                Color = "outline"
-            }
-            --
             local colorpicker_inline = utility:Create("Frame", {Vector2.new(1,1), colorpicker_outline}, {
                 Size = utility:Size(1, -2, 1, -2, colorpicker_outline),
                 Position = utility:Position(0, 1, 0, 1, colorpicker_outline),
                 Color = theme.inline,
                 Visible = page.open
             }, section.visibleContent)
-            --
-            library.colors[colorpicker_inline] = {
-                Color = "inline"
-            }
             --
             local colorpicker__transparency
             if transp then
@@ -2377,7 +2358,7 @@ do
             end
             utility:LoadImage(colorpicker__gradient, "gradient", "https://i.imgur.com/5hmlrjX.png")
             --
-            function colorpicker:set(color, transp_val)
+            function colorpicker:Set(color, transp_val)
                 if typeof(color) == "table" then
                     if color.Color and color.Transparency then
                         local h, s, v = table.unpack(color.Color)
@@ -2391,18 +2372,13 @@ do
                         colorpicker_frame.Transparency = 1 - colorpicker.current[4]
                         callback(Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3]), colorpicker.current[4])
                     end
-                elseif typeof(color) == "Color3" then
+                elseif typeof(color) == "color3" then
                     local h, s, v = color:ToHSV()
                     colorpicker.current = {h, s, v, (transp_val or 0)}
                     colorpicker_frame.Color = Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3])
                     colorpicker_frame.Transparency = 1 - colorpicker.current[4]
                     callback(Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3]), colorpicker.current[4]) 
                 end
-            end
-            --
-            function colorpicker:set_callback(p_callback)
-                callback = p_callback
-                callback(self:get())
             end
             --
             function colorpicker:Refresh()
@@ -2453,11 +2429,10 @@ do
                     colorpicker.holder.background.Color = Color3.fromHSV(colorpicker.current[1], 1, 1)
                 end
                 --
-                colorpicker:set(colorpicker.current)
-                return self
+                colorpicker:Set(colorpicker.current)
             end
             --
-            function colorpicker:get()
+            function colorpicker:Get()
                 return {Color = Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3]), Transparency = colorpicker.current[4]}
             end
             --
@@ -2485,39 +2460,24 @@ do
                                 Color = theme.outline
                             }, colorpicker.holder.drawings);colorpicker.holder.inline = colorpicker_open_outline
                             --
-                            library.colors[colorpicker_open_outline] = {
-                                Color = "outline"
-                            }
-                            --
                             local colorpicker_open_inline = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_outline}, {
                                 Size = utility:Size(1, -2, 1, -2, colorpicker_open_outline),
                                 Position = utility:Position(0, 1, 0, 1, colorpicker_open_outline),
                                 Color = theme.inline
                             }, colorpicker.holder.drawings)
                             --
-                            library.colors[colorpicker_open_inline] = {
-                                Color = "inline"
-                            }
-                            --
                             local colorpicker_open_frame = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_inline}, {
                                 Size = utility:Size(1, -2, 1, -2, colorpicker_open_inline),
                                 Position = utility:Position(0, 1, 0, 1, colorpicker_open_inline),
-                                Color = theme.darkcontrast
+                                Color = theme.dark_contrast
                             }, colorpicker.holder.drawings)
-                            --
-                            library.colors[colorpicker_open_frame] = {
-                                Color = "darkcontrast"
-                            }
                             --
                             local colorpicker_open_accent = utility:Create("Frame", {Vector2.new(0,0), colorpicker_open_frame}, {
                                 Size = utility:Size(1, 0, 0, 2, colorpicker_open_frame),
                                 Position = utility:Position(0, 0, 0, 0, colorpicker_open_frame),
                                 Color = theme.accent
                             }, colorpicker.holder.drawings)
-                            --
-                            library.colors[colorpicker_open_accent] = {
-                                Color = "accent"
-                            }
+                            library.accents[#library.accents + 1] = colorpicker_open_accent
                             --
                             local colorpicker_title = utility:Create("TextLabel", {Vector2.new(4,2), colorpicker_open_frame}, {
                                 Text = cpinfo,
@@ -2528,30 +2488,17 @@ do
                                 Position = utility:Position(0, 4, 0, 2, colorpicker_open_frame),
                             }, colorpicker.holder.drawings)
                             --
-                            library.colors[colorpicker_title] = {
-                                OutlineColor = "textborder",
-                                Color = "textcolor"
-                            }
-                            --
                             local colorpicker_open_picker_outline = utility:Create("Frame", {Vector2.new(4,17), colorpicker_open_frame}, {
                                 Size = utility:Size(1, -27, 1, transp and -40 or -21, colorpicker_open_frame),
                                 Position = utility:Position(0, 4, 0, 17, colorpicker_open_frame),
                                 Color = theme.outline
                             }, colorpicker.holder.drawings)
                             --
-                            library.colors[colorpicker_open_picker_outline] = {
-                                Color = "outline"
-                            }
-                            --
                             local colorpicker_open_picker_inline = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_picker_outline}, {
                                 Size = utility:Size(1, -2, 1, -2, colorpicker_open_picker_outline),
                                 Position = utility:Position(0, 1, 0, 1, colorpicker_open_picker_outline),
                                 Color = theme.inline
                             }, colorpicker.holder.drawings)
-                            --
-                            library.colors[colorpicker_open_picker_inline] = {
-                                Color = "inline"
-                            }
                             --
                             local colorpicker_open_picker_bg = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_picker_inline}, {
                                 Size = utility:Size(1, -2, 1, -2, colorpicker_open_picker_inline),
@@ -2575,19 +2522,11 @@ do
                                 Color = theme.outline
                             }, colorpicker.holder.drawings)
                             --
-                            library.colors[colorpicker_open_huepicker_outline] = {
-                                Color = "outline"
-                            }
-                            --
                             local colorpicker_open_huepicker_inline = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_huepicker_outline}, {
                                 Size = utility:Size(1, -2, 1, -2, colorpicker_open_huepicker_outline),
                                 Position = utility:Position(0, 1, 0, 1, colorpicker_open_huepicker_outline),
                                 Color = theme.inline
                             }, colorpicker.holder.drawings)
-                            --
-                            library.colors[colorpicker_open_huepicker_inline] = {
-                                Color = "inline"
-                            }
                             --
                             local colorpicker_open_huepicker_image = utility:Create("Image", {Vector2.new(1,1), colorpicker_open_huepicker_inline}, {
                                 Size = utility:Size(1, -2, 1, -2, colorpicker_open_huepicker_inline),
@@ -2600,19 +2539,11 @@ do
                                 Color = theme.outline
                             }, colorpicker.holder.drawings);colorpicker.holder.huepicker_cursor[1] = colorpicker_open_huepicker_cursor_outline
                             --
-                            library.colors[colorpicker_open_huepicker_cursor_outline] = {
-                                Color = "outline"
-                            }
-                            --
                             local colorpicker_open_huepicker_cursor_inline = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_huepicker_cursor_outline}, {
                                 Size = utility:Size(1, -2, 1, -2, colorpicker_open_huepicker_cursor_outline),
                                 Position = utility:Position(0, 1, 0, 1, colorpicker_open_huepicker_cursor_outline),
                                 Color = theme.textcolor
                             }, colorpicker.holder.drawings);colorpicker.holder.huepicker_cursor[2] = colorpicker_open_huepicker_cursor_inline
-                            --
-                            library.colors[colorpicker_open_huepicker_cursor_inline] = {
-                                Color = "textcolor"
-                            }
                             --
                             local colorpicker_open_huepicker_cursor_color = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_huepicker_cursor_inline}, {
                                 Size = utility:Size(1, -2, 1, -2, colorpicker_open_huepicker_cursor_inline),
@@ -2627,19 +2558,11 @@ do
                                     Color = theme.outline
                                 }, colorpicker.holder.drawings)
                                 --
-                                library.colors[colorpicker_open_transparency_outline] = {
-                                    Color = "outline"
-                                }
-                                --
                                 local colorpicker_open_transparency_inline = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_transparency_outline}, {
                                     Size = utility:Size(1, -2, 1, -2, colorpicker_open_transparency_outline),
                                     Position = utility:Position(0, 1, 0, 1, colorpicker_open_transparency_outline),
                                     Color = theme.inline
                                 }, colorpicker.holder.drawings)
-                                --
-                                library.colors[colorpicker_open_transparency_inline] = {
-                                    Color = "inline"
-                                }
                                 --
                                 local colorpicker_open_transparency_bg = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_transparency_inline}, {
                                     Size = utility:Size(1, -2, 1, -2, colorpicker_open_transparency_inline),
@@ -2658,19 +2581,11 @@ do
                                     Color = theme.outline
                                 }, colorpicker.holder.drawings);colorpicker.holder.transparency_cursor[1] = colorpicker_open_transparency_cursor_outline
                                 --
-                                library.colors[colorpicker_open_transparency_cursor_outline] = {
-                                    Color = "outline"
-                                }
-                                --
                                 local colorpicker_open_transparency_cursor_inline = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_transparency_cursor_outline}, {
                                     Size = utility:Size(1, -2, 1, -2, colorpicker_open_transparency_cursor_outline),
                                     Position = utility:Position(0, 1, 0, 1, colorpicker_open_transparency_cursor_outline),
                                     Color = theme.textcolor
                                 }, colorpicker.holder.drawings);colorpicker.holder.transparency_cursor[2] = colorpicker_open_transparency_cursor_inline
-                                --
-                                library.colors[colorpicker_open_transparency_cursor_inline] = {
-                                    Color = "textcolor"
-                                }
                                 --
                                 local colorpicker_open_transparency_cursor_color = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_transparency_cursor_inline}, {
                                     Size = utility:Size(1, -2, 1, -2, colorpicker_open_transparency_cursor_inline),
@@ -2745,7 +2660,7 @@ do
                 end
             end
             --
-            library.changed[#library.changed + 1] = function()
+            library.changed[#library.changed + 1] = function(Input)
                 if colorpicker.open and colorpicker.holding.picker or colorpicker.holding.huepicker or colorpicker.holding.transparency then
                     if window.isVisible then
                         colorpicker:Refresh()
@@ -2761,6 +2676,14 @@ do
                         end
                     end
                 end
+                if Input.UserInputType == Enum.UserInputType.MouseMovement and colorpicker_outline.Visible and window.isVisible then
+                    if utility:MouseOverDrawing({section.section_frame.Position.X + (section.section_frame.Size.X - (colorpicker.index == 0 and (30 + 4 + 2) or (64 + 4 + 2))), section.section_frame.Position.Y + colorpicker.axis, section.section_frame.Position.X + section.section_frame.Size.X - (colorpicker.index == 1 and 36 or 0), section.section_frame.Position.Y + colorpicker.axis + 15}) and not window:IsOverContent() then
+                        local h, s, v = theme.accent:ToHSV()
+                        colorpicker_inline.Color = Color3.fromHSV(h, 0.44, v)
+                    else
+                        colorpicker_inline.Color = theme.inline
+                    end
+                end
             end
             --
             if pointer and tostring(pointer) ~= "" and tostring(pointer) ~= " " and not library.pointers[tostring(pointer)] then
@@ -2771,8 +2694,7 @@ do
             toggle.colorpickers = toggle.colorpickers + 1
             section:Update()
             --
-            callback(colorpicker:get())
-            return toggle, colorpicker
+            return colorpicker, toggle
         end
         --
         function toggle:Keybind(info)
@@ -4365,11 +4287,6 @@ do
         local hh, ss, vv = def:ToHSV()
         local colorpicker = {axis = section.currentAxis, secondColorpicker = false, current = {hh, ss, vv , (transp or 0)}, holding = {picker = false, huepicker = false, transparency = false}, holder = {inline = nil, picker = nil, picker_cursor = nil, huepicker = nil, huepicker_cursor = {}, transparency = nil, transparencybg = nil, transparency_cursor = {}, drawings = {}}}
         --
-        function colorpicker:set_callback(c)
-            callback = c
-            callback(self:get())
-        end
-        --
         local colorpicker_outline = utility:Create("Frame", {Vector2.new(section.section_frame.Size.X-(30+4),colorpicker.axis), section.section_frame}, {
             Size = utility:Size(0, 30, 0, 15),
             Position = utility:Position(1, -(30+4), 0, colorpicker.axis, section.section_frame),
@@ -4383,10 +4300,6 @@ do
             Color = theme.inline,
             Visible = page.open
         }, section.visibleContent)
-        --
-        library.colors[colorpicker_inline] = {
-            Color = "inline"
-        }
         --
         local colorpicker__transparency
         if transp then
@@ -4422,21 +4335,16 @@ do
             Visible = page.open
         }, section.visibleContent)
         --
-        library.colors[colorpicker_title] = {
-            OutlineColor = "textborder",
-            Color = "textcolor"
-        }
-        --
         if transp then
             utility:LoadImage(colorpicker__transparency, "cptransp", "https://i.imgur.com/IIPee2A.png")
         end
         utility:LoadImage(colorpicker__gradient, "gradient", "https://i.imgur.com/5hmlrjX.png")
         --
-        function colorpicker:set(color, transp_val)
+        function colorpicker:Set(color, transp_val)
             if typeof(color) == "table" then
                 if color.Color and color.Transparency then
                     local h, s, v = table.unpack(color.Color)
-                    colorpicker.current = {h, s, v, color.Transparency}
+                    colorpicker.current = {h, s, v , color.Transparency}
                     colorpicker_frame.Color = Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3])
                     colorpicker_frame.Transparency = 1 - colorpicker.current[4]
                     callback(Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3]), colorpicker.current[4])
@@ -4446,18 +4354,13 @@ do
                     colorpicker_frame.Transparency = 1 - colorpicker.current[4]
                     callback(Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3]), colorpicker.current[4])
                 end
-            elseif typeof(color) == "Color3" then
+            elseif typeof(color) == "color3" then
                 local h, s, v = color:ToHSV()
                 colorpicker.current = {h, s, v, (transp_val or 0)}
                 colorpicker_frame.Color = Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3])
                 colorpicker_frame.Transparency = 1 - colorpicker.current[4]
-                callback(Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3]), colorpicker.current[4])
+                callback(Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3]), colorpicker.current[4]) 
             end
-        end
-        --
-        function colorpicker:set_callback(p_callback)
-            callback = p_callback
-            callback(self:get())
         end
         --
         function colorpicker:Refresh()
@@ -4508,11 +4411,11 @@ do
                 colorpicker.holder.background.Color = Color3.fromHSV(colorpicker.current[1], 1, 1)
             end
             --
-            colorpicker:set(colorpicker.current)
+            colorpicker:Set(colorpicker.current)
         end
         --
-        function colorpicker:get()
-            return Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3])
+        function colorpicker:Get()
+            return {Color = Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3]), Transparency = colorpicker.current[4]}
         end
         --
         library.began[#library.began + 1] = function(Input)
@@ -4539,29 +4442,17 @@ do
                             Color = theme.outline
                         }, colorpicker.holder.drawings);colorpicker.holder.inline = colorpicker_open_outline
                         --
-                        library.colors[colorpicker_open_outline] = {
-                            Color = "outline"
-                        }
-                        --
                         local colorpicker_open_inline = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_outline}, {
                             Size = utility:Size(1, -2, 1, -2, colorpicker_open_outline),
                             Position = utility:Position(0, 1, 0, 1, colorpicker_open_outline),
                             Color = theme.inline
                         }, colorpicker.holder.drawings)
                         --
-                        library.colors[colorpicker_open_inline] = {
-                            Color = "inline"
-                        }
-                        --
                         local colorpicker_open_frame = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_inline}, {
                             Size = utility:Size(1, -2, 1, -2, colorpicker_open_inline),
                             Position = utility:Position(0, 1, 0, 1, colorpicker_open_inline),
-                            Color = theme.darkcontrast
+                            Color = theme.dark_contrast
                         }, colorpicker.holder.drawings)
-                        --
-                        library.colors[colorpicker_open_frame] = {
-                            Color = "darkcontrast"
-                        }
                         --
                         local colorpicker_open_accent = utility:Create("Frame", {Vector2.new(0,0), colorpicker_open_frame}, {
                             Size = utility:Size(1, 0, 0, 2, colorpicker_open_frame),
@@ -4569,9 +4460,13 @@ do
                             Color = theme.accent
                         }, colorpicker.holder.drawings)
                         --
-                        library.colors[colorpicker_open_accent] = {
-                            Color = "accent"
-                        }
+                        local accent_connection accent_connection = rs.RenderStepped:Connect(function()
+                            if colorpicker.open then
+                                colorpicker_open_accent.Color = theme.accent
+                            else
+                                accent_connection:Disconnect()
+                            end
+                        end)
                         --
                         local colorpicker_title = utility:Create("TextLabel", {Vector2.new(4,2), colorpicker_open_frame}, {
                             Text = cpinfo,
@@ -4582,30 +4477,17 @@ do
                             Position = utility:Position(0, 4, 0, 2, colorpicker_open_frame),
                         }, colorpicker.holder.drawings)
                         --
-                        library.colors[colorpicker_title] = {
-                            OutlineColor = "textborder",
-                            Color = "textcolor"
-                        }
-                        --
                         local colorpicker_open_picker_outline = utility:Create("Frame", {Vector2.new(4,17), colorpicker_open_frame}, {
                             Size = utility:Size(1, -27, 1, transp and -40 or -21, colorpicker_open_frame),
                             Position = utility:Position(0, 4, 0, 17, colorpicker_open_frame),
                             Color = theme.outline
                         }, colorpicker.holder.drawings)
                         --
-                        library.colors[colorpicker_open_picker_outline] = {
-                            Color = "outline"
-                        }
-                        --
                         local colorpicker_open_picker_inline = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_picker_outline}, {
                             Size = utility:Size(1, -2, 1, -2, colorpicker_open_picker_outline),
                             Position = utility:Position(0, 1, 0, 1, colorpicker_open_picker_outline),
                             Color = theme.inline
                         }, colorpicker.holder.drawings)
-                        --
-                        library.colors[colorpicker_open_picker_inline] = {
-                            Color = "inline"
-                        }
                         --
                         local colorpicker_open_picker_bg = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_picker_inline}, {
                             Size = utility:Size(1, -2, 1, -2, colorpicker_open_picker_inline),
@@ -4629,19 +4511,11 @@ do
                             Color = theme.outline
                         }, colorpicker.holder.drawings)
                         --
-                        library.colors[colorpicker_open_huepicker_outline] = {
-                            Color = "outline"
-                        }
-                        --
                         local colorpicker_open_huepicker_inline = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_huepicker_outline}, {
                             Size = utility:Size(1, -2, 1, -2, colorpicker_open_huepicker_outline),
                             Position = utility:Position(0, 1, 0, 1, colorpicker_open_huepicker_outline),
                             Color = theme.inline
                         }, colorpicker.holder.drawings)
-                        --
-                        library.colors[colorpicker_open_huepicker_inline] = {
-                            Color = "inline"
-                        }
                         --
                         local colorpicker_open_huepicker_image = utility:Create("Image", {Vector2.new(1,1), colorpicker_open_huepicker_inline}, {
                             Size = utility:Size(1, -2, 1, -2, colorpicker_open_huepicker_inline),
@@ -4654,19 +4528,11 @@ do
                             Color = theme.outline
                         }, colorpicker.holder.drawings);colorpicker.holder.huepicker_cursor[1] = colorpicker_open_huepicker_cursor_outline
                         --
-                        library.colors[colorpicker_open_huepicker_cursor_outline] = {
-                            Color = "outline"
-                        }
-                        --
                         local colorpicker_open_huepicker_cursor_inline = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_huepicker_cursor_outline}, {
                             Size = utility:Size(1, -2, 1, -2, colorpicker_open_huepicker_cursor_outline),
                             Position = utility:Position(0, 1, 0, 1, colorpicker_open_huepicker_cursor_outline),
                             Color = theme.textcolor
                         }, colorpicker.holder.drawings);colorpicker.holder.huepicker_cursor[2] = colorpicker_open_huepicker_cursor_inline
-                        --
-                        library.colors[colorpicker_open_huepicker_cursor_inline] = {
-                            Color = "textcolor"
-                        }
                         --
                         local colorpicker_open_huepicker_cursor_color = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_huepicker_cursor_inline}, {
                             Size = utility:Size(1, -2, 1, -2, colorpicker_open_huepicker_cursor_inline),
@@ -4681,19 +4547,11 @@ do
                                 Color = theme.outline
                             }, colorpicker.holder.drawings)
                             --
-                            library.colors[colorpicker_open_transparency_outline] = {
-                                Color = "outline"
-                            }
-                            --
                             local colorpicker_open_transparency_inline = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_transparency_outline}, {
                                 Size = utility:Size(1, -2, 1, -2, colorpicker_open_transparency_outline),
                                 Position = utility:Position(0, 1, 0, 1, colorpicker_open_transparency_outline),
                                 Color = theme.inline
                             }, colorpicker.holder.drawings)
-                            --
-                            library.colors[colorpicker_open_transparency_inline] = {
-                                Color = "inline"
-                            }
                             --
                             local colorpicker_open_transparency_bg = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_transparency_inline}, {
                                 Size = utility:Size(1, -2, 1, -2, colorpicker_open_transparency_inline),
@@ -4712,19 +4570,11 @@ do
                                 Color = theme.outline
                             }, colorpicker.holder.drawings);colorpicker.holder.transparency_cursor[1] = colorpicker_open_transparency_cursor_outline
                             --
-                            library.colors[colorpicker_open_transparency_cursor_outline] = {
-                                Color = "outline"
-                            }
-                            --
                             local colorpicker_open_transparency_cursor_inline = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_transparency_cursor_outline}, {
                                 Size = utility:Size(1, -2, 1, -2, colorpicker_open_transparency_cursor_outline),
                                 Position = utility:Position(0, 1, 0, 1, colorpicker_open_transparency_cursor_outline),
                                 Color = theme.textcolor
                             }, colorpicker.holder.drawings);colorpicker.holder.transparency_cursor[2] = colorpicker_open_transparency_cursor_inline
-                            --
-                            library.colors[colorpicker_open_transparency_cursor_inline] = {
-                                Color = "textcolor"
-                            }
                             --
                             local colorpicker_open_transparency_cursor_color = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_transparency_cursor_inline}, {
                                 Size = utility:Size(1, -2, 1, -2, colorpicker_open_transparency_cursor_inline),
@@ -4733,6 +4583,7 @@ do
                             }, colorpicker.holder.drawings);colorpicker.holder.transparency_cursor[3] = colorpicker_open_transparency_cursor_color
                             --
                             utility:LoadImage(colorpicker_open_transparency_image, "transp", "https://i.imgur.com/ncssKbH.png")
+                            --utility:LoadImage(colorpicker_open_transparency_image, "transp", "https://i.imgur.com/VcMAYjL.png")
                         end
                         --
                         utility:LoadImage(colorpicker_open_picker_image, "valsat", "https://i.imgur.com/wpDRqVH.png")
@@ -4798,7 +4649,7 @@ do
             end
         end
         --
-        library.changed[#library.changed + 1] = function()
+        library.changed[#library.changed + 1] = function(Input)
             if colorpicker.open and colorpicker.holding.picker or colorpicker.holding.huepicker or colorpicker.holding.transparency then
                 if window.isVisible then
                     colorpicker:Refresh()
@@ -4812,6 +4663,14 @@ do
                     if colorpicker.holding.transparency then
                         colorpicker.holding.transparency = not colorpicker.holding.transparency
                     end
+                end
+            end
+            if Input.UserInputType == Enum.UserInputType.MouseMovement and colorpicker_outline.Visible and window.isVisible then
+                if utility:MouseOverDrawing({section.section_frame.Position.X, section.section_frame.Position.Y + colorpicker.axis, section.section_frame.Position.X + section.section_frame.Size.X - (colorpicker.secondColorpicker and (30+4) or 0), section.section_frame.Position.Y + colorpicker.axis + 15}) and not window:IsOverContent() then
+                    local h, s, v = theme.accent:ToHSV()
+                    colorpicker_inline.Color = Color3.fromHSV(h, 0.44, v)
+                else
+                    colorpicker_inline.Color = theme.inline
                 end
             end
         end
@@ -4836,11 +4695,6 @@ do
             local hh, ss, vv = def:ToHSV()
             local colorpicker = {axis = colorpicker.axis, current = {hh, ss, vv , (transp or 0)}, holding = {picker = false, huepicker = false, transparency = false}, holder = {inline = nil, picker = nil, picker_cursor = nil, huepicker = nil, huepicker_cursor = {}, transparency = nil, transparencybg = nil, transparency_cursor = {}, drawings = {}}}
             --
-            function colorpicker:set_callback(c)
-                callback = c
-                callback(self:get())
-            end
-            --
             colorpicker_outline.Position = utility:Position(1, -(60+8), 0, colorpicker.axis, section.section_frame)
             utility:UpdateOffset(colorpicker_outline, {Vector2.new(section.section_frame.Size.X-(60+8),colorpicker.axis), section.section_frame})
             --
@@ -4851,20 +4705,12 @@ do
                 Visible = page.open
             }, section.visibleContent)
             --
-            library.colors[colorpicker_outline] = {
-                Color = "outline"
-            }
-            --
             local colorpicker_inline = utility:Create("Frame", {Vector2.new(1,1), colorpicker_outline}, {
                 Size = utility:Size(1, -2, 1, -2, colorpicker_outline),
                 Position = utility:Position(0, 1, 0, 1, colorpicker_outline),
                 Color = theme.inline,
                 Visible = page.open
             }, section.visibleContent)
-            --
-            library.colors[colorpicker_inline] = {
-                Color = "inline"
-            }
             --
             local colorpicker__transparency
             if transp then
@@ -4895,24 +4741,27 @@ do
             end
             utility:LoadImage(colorpicker__gradient, "gradient", "https://i.imgur.com/5hmlrjX.png")
             --
-            function colorpicker:set(color, transp_val)
+            function colorpicker:Set(color, transp_val)
                 if typeof(color) == "table" then
-                    colorpicker.current = color
-                    colorpicker_frame.Color = Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3])
-                    colorpicker_frame.Transparency = 1 - colorpicker.current[4]
-                    callback(Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3]), colorpicker.current[4])
-                elseif typeof(color) == "Color3" then
+                    if color.Color and color.Transparency then
+                        local h, s, v = table.unpack(color.Color)
+                        colorpicker.current = {h, s, v , color.Transparency}
+                        colorpicker_frame.Color = Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3])
+                        colorpicker_frame.Transparency = 1 - colorpicker.current[4]
+                        callback(Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3]), colorpicker.current[4])
+                    else
+                        colorpicker.current = color
+                        colorpicker_frame.Color = Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3])
+                        colorpicker_frame.Transparency = 1 - colorpicker.current[4]
+                        callback(Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3]), colorpicker.current[4])
+                    end
+                elseif typeof(color) == "color3" then
                     local h, s, v = color:ToHSV()
                     colorpicker.current = {h, s, v, (transp_val or 0)}
                     colorpicker_frame.Color = Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3])
                     colorpicker_frame.Transparency = 1 - colorpicker.current[4]
                     callback(Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3]), colorpicker.current[4]) 
                 end
-            end
-            --
-            function colorpicker:set_callback(p_callback)
-                callback = p_callback
-                callback(self:get())
             end
             --
             function colorpicker:Refresh()
@@ -4963,11 +4812,11 @@ do
                     colorpicker.holder.background.Color = Color3.fromHSV(colorpicker.current[1], 1, 1)
                 end
                 --
-                colorpicker:set(colorpicker.current)
+                colorpicker:Set(colorpicker.current)
             end
             --
-            function colorpicker:get()
-                return Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3])
+            function colorpicker:Get()
+                return {Color = Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3]), Transparency = colorpicker.current[4]}
             end
             --
             library.began[#library.began + 1] = function(Input)
@@ -4994,39 +4843,23 @@ do
                                 Color = theme.outline
                             }, colorpicker.holder.drawings);colorpicker.holder.inline = colorpicker_open_outline
                             --
-                            library.colors[colorpicker_open_outline] = {
-                                Color = "outline"
-                            }
-                            --
                             local colorpicker_open_inline = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_outline}, {
                                 Size = utility:Size(1, -2, 1, -2, colorpicker_open_outline),
                                 Position = utility:Position(0, 1, 0, 1, colorpicker_open_outline),
                                 Color = theme.inline
                             }, colorpicker.holder.drawings)
                             --
-                            library.colors[colorpicker_open_inline] = {
-                                Color = "inline"
-                            }
-                            --
                             local colorpicker_open_frame = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_inline}, {
                                 Size = utility:Size(1, -2, 1, -2, colorpicker_open_inline),
                                 Position = utility:Position(0, 1, 0, 1, colorpicker_open_inline),
-                                Color = theme.darkcontrast
+                                Color = theme.dark_contrast
                             }, colorpicker.holder.drawings)
-                            --
-                            library.colors[colorpicker_open_frame] = {
-                                Color = "darkcontrast"
-                            }
                             --
                             local colorpicker_open_accent = utility:Create("Frame", {Vector2.new(0,0), colorpicker_open_frame}, {
                                 Size = utility:Size(1, 0, 0, 2, colorpicker_open_frame),
                                 Position = utility:Position(0, 0, 0, 0, colorpicker_open_frame),
                                 Color = theme.accent
                             }, colorpicker.holder.drawings)
-                            --
-                            library.colors[colorpicker_open_accent] = {
-                                Color = "accent"
-                            }
                             --
                             local colorpicker_title = utility:Create("TextLabel", {Vector2.new(4,2), colorpicker_open_frame}, {
                                 Text = cpinfo,
@@ -5037,30 +4870,17 @@ do
                                 Position = utility:Position(0, 4, 0, 2, colorpicker_open_frame),
                             }, colorpicker.holder.drawings)
                             --
-                            library.colors[colorpicker_title] = {
-                                OutlineColor = "textborder",
-                                Color = "textcolor"
-                            }
-                            --
                             local colorpicker_open_picker_outline = utility:Create("Frame", {Vector2.new(4,17), colorpicker_open_frame}, {
                                 Size = utility:Size(1, -27, 1, transp and -40 or -21, colorpicker_open_frame),
                                 Position = utility:Position(0, 4, 0, 17, colorpicker_open_frame),
                                 Color = theme.outline
                             }, colorpicker.holder.drawings)
                             --
-                            library.colors[colorpicker_open_picker_outline] = {
-                                Color = "outline"
-                            }
-                            --
                             local colorpicker_open_picker_inline = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_picker_outline}, {
                                 Size = utility:Size(1, -2, 1, -2, colorpicker_open_picker_outline),
                                 Position = utility:Position(0, 1, 0, 1, colorpicker_open_picker_outline),
                                 Color = theme.inline
                             }, colorpicker.holder.drawings)
-                            --
-                            library.colors[colorpicker_open_picker_inline] = {
-                                Color = "inline"
-                            }
                             --
                             local colorpicker_open_picker_bg = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_picker_inline}, {
                                 Size = utility:Size(1, -2, 1, -2, colorpicker_open_picker_inline),
@@ -5084,19 +4904,11 @@ do
                                 Color = theme.outline
                             }, colorpicker.holder.drawings)
                             --
-                            library.colors[colorpicker_open_huepicker_outline] = {
-                                Color = "outline"
-                            }
-                            --
                             local colorpicker_open_huepicker_inline = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_huepicker_outline}, {
                                 Size = utility:Size(1, -2, 1, -2, colorpicker_open_huepicker_outline),
                                 Position = utility:Position(0, 1, 0, 1, colorpicker_open_huepicker_outline),
                                 Color = theme.inline
                             }, colorpicker.holder.drawings)
-                            --
-                            library.colors[colorpicker_open_huepicker_inline] = {
-                                Color = "inline"
-                            }
                             --
                             local colorpicker_open_huepicker_image = utility:Create("Image", {Vector2.new(1,1), colorpicker_open_huepicker_inline}, {
                                 Size = utility:Size(1, -2, 1, -2, colorpicker_open_huepicker_inline),
@@ -5109,19 +4921,11 @@ do
                                 Color = theme.outline
                             }, colorpicker.holder.drawings);colorpicker.holder.huepicker_cursor[1] = colorpicker_open_huepicker_cursor_outline
                             --
-                            library.colors[colorpicker_open_huepicker_cursor_outline] = {
-                                Color = "outline"
-                            }
-                            --
                             local colorpicker_open_huepicker_cursor_inline = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_huepicker_cursor_outline}, {
                                 Size = utility:Size(1, -2, 1, -2, colorpicker_open_huepicker_cursor_outline),
                                 Position = utility:Position(0, 1, 0, 1, colorpicker_open_huepicker_cursor_outline),
                                 Color = theme.textcolor
                             }, colorpicker.holder.drawings);colorpicker.holder.huepicker_cursor[2] = colorpicker_open_huepicker_cursor_inline
-                            --
-                            library.colors[colorpicker_open_huepicker_cursor_inline] = {
-                                Color = "textcolor"
-                            }
                             --
                             local colorpicker_open_huepicker_cursor_color = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_huepicker_cursor_inline}, {
                                 Size = utility:Size(1, -2, 1, -2, colorpicker_open_huepicker_cursor_inline),
@@ -5136,19 +4940,11 @@ do
                                     Color = theme.outline
                                 }, colorpicker.holder.drawings)
                                 --
-                                library.colors[colorpicker_open_transparency_outline] = {
-                                    Color = "outline"
-                                }
-                                --
                                 local colorpicker_open_transparency_inline = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_transparency_outline}, {
                                     Size = utility:Size(1, -2, 1, -2, colorpicker_open_transparency_outline),
                                     Position = utility:Position(0, 1, 0, 1, colorpicker_open_transparency_outline),
                                     Color = theme.inline
                                 }, colorpicker.holder.drawings)
-                                --
-                                library.colors[colorpicker_open_transparency_inline] = {
-                                    Color = "inline"
-                                }
                                 --
                                 local colorpicker_open_transparency_bg = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_transparency_inline}, {
                                     Size = utility:Size(1, -2, 1, -2, colorpicker_open_transparency_inline),
@@ -5167,19 +4963,11 @@ do
                                     Color = theme.outline
                                 }, colorpicker.holder.drawings);colorpicker.holder.transparency_cursor[1] = colorpicker_open_transparency_cursor_outline
                                 --
-                                library.colors[colorpicker_open_transparency_cursor_outline] = {
-                                    Color = "outline"
-                                }
-                                --
                                 local colorpicker_open_transparency_cursor_inline = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_transparency_cursor_outline}, {
                                     Size = utility:Size(1, -2, 1, -2, colorpicker_open_transparency_cursor_outline),
                                     Position = utility:Position(0, 1, 0, 1, colorpicker_open_transparency_cursor_outline),
                                     Color = theme.textcolor
                                 }, colorpicker.holder.drawings);colorpicker.holder.transparency_cursor[2] = colorpicker_open_transparency_cursor_inline
-                                --
-                                library.colors[colorpicker_open_transparency_cursor_inline] = {
-                                    Color = "textcolor"
-                                }
                                 --
                                 local colorpicker_open_transparency_cursor_color = utility:Create("Frame", {Vector2.new(1,1), colorpicker_open_transparency_cursor_inline}, {
                                     Size = utility:Size(1, -2, 1, -2, colorpicker_open_transparency_cursor_inline),
@@ -5254,7 +5042,7 @@ do
                 end
             end
             --
-            library.changed[#library.changed + 1] = function()
+            library.changed[#library.changed + 1] = function(Input)
                 if colorpicker.open and colorpicker.holding.picker or colorpicker.holding.huepicker or colorpicker.holding.transparency then
                     if window.isVisible then
                         colorpicker:Refresh()
@@ -5268,6 +5056,14 @@ do
                         if colorpicker.holding.transparency then
                             colorpicker.holding.transparency = not colorpicker.holding.transparency
                         end
+                    end
+                end
+                if Input.UserInputType == Enum.UserInputType.MouseMovement and colorpicker_outline.Visible and window.isVisible then
+                    if utility:MouseOverDrawing({section.section_frame.Position.X, section.section_frame.Position.Y + colorpicker.axis, section.section_frame.Position.X + section.section_frame.Size.X - (colorpicker.secondColorpicker and (30+4) or 0), section.section_frame.Position.Y + colorpicker.axis + 15}) and not window:IsOverContent() then
+                        local h, s, v = theme.accent:ToHSV()
+                        colorpicker_inline.Color = Color3.fromHSV(h, 0.44, v)
+                    else
+                        colorpicker_inline.Color = theme.inline
                     end
                 end
             end
