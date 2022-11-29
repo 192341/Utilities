@@ -1654,11 +1654,6 @@ do
             Color = "darkcontrast"
         }
         --
-        --
-        library.colors[page_accent] = {
-            Color = "accent"
-        }
-        --
         local page_button_title = utility:Create("TextLabel", {Vector2.new(utility:Position(0.5, 0, 0, 2, page_button_color).X - page_button_color.Position.X,2), page_button_color}, {
             Text = name,
             Size = theme.textsize,
