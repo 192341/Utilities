@@ -2477,7 +2477,6 @@ do
                                 Position = utility:Position(0, 0, 0, 0, colorpicker_open_frame),
                                 Color = theme.accent
                             }, colorpicker.holder.drawings)
-                            library.accents[#library.accents + 1] = colorpicker_open_accent
                             --
                             local colorpicker_title = utility:Create("TextLabel", {Vector2.new(4,2), colorpicker_open_frame}, {
                                 Text = cpinfo,
@@ -2660,7 +2659,7 @@ do
                 end
             end
             --
-            library.changed[#library.changed + 1] = function(Input)
+            library.changed[#library.changed + 1] = function()
                 if colorpicker.open and colorpicker.holding.picker or colorpicker.holding.huepicker or colorpicker.holding.transparency then
                     if window.isVisible then
                         colorpicker:Refresh()
@@ -2674,14 +2673,6 @@ do
                         if colorpicker.holding.transparency then
                             colorpicker.holding.transparency = not colorpicker.holding.transparency
                         end
-                    end
-                end
-                if Input.UserInputType == Enum.UserInputType.MouseMovement and colorpicker_outline.Visible and window.isVisible then
-                    if utility:MouseOverDrawing({section.section_frame.Position.X + (section.section_frame.Size.X - (colorpicker.index == 0 and (30 + 4 + 2) or (64 + 4 + 2))), section.section_frame.Position.Y + colorpicker.axis, section.section_frame.Position.X + section.section_frame.Size.X - (colorpicker.index == 1 and 36 or 0), section.section_frame.Position.Y + colorpicker.axis + 15}) and not window:IsOverContent() then
-                        local h, s, v = theme.accent:ToHSV()
-                        colorpicker_inline.Color = Color3.fromHSV(h, 0.44, v)
-                    else
-                        colorpicker_inline.Color = theme.inline
                     end
                 end
             end
@@ -4342,18 +4333,10 @@ do
         --
         function colorpicker:Set(color, transp_val)
             if typeof(color) == "table" then
-                if color.Color and color.Transparency then
-                    local h, s, v = table.unpack(color.Color)
-                    colorpicker.current = {h, s, v , color.Transparency}
-                    colorpicker_frame.Color = Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3])
-                    colorpicker_frame.Transparency = 1 - colorpicker.current[4]
-                    callback(Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3]), colorpicker.current[4])
-                else
-                    colorpicker.current = color
-                    colorpicker_frame.Color = Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3])
-                    colorpicker_frame.Transparency = 1 - colorpicker.current[4]
-                    callback(Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3]), colorpicker.current[4])
-                end
+                colorpicker.current = color
+                colorpicker_frame.Color = Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3])
+                colorpicker_frame.Transparency = 1 - colorpicker.current[4]
+                callback(Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3]), colorpicker.current[4])
             elseif typeof(color) == "color3" then
                 local h, s, v = color:ToHSV()
                 colorpicker.current = {h, s, v, (transp_val or 0)}
@@ -4415,7 +4398,7 @@ do
         end
         --
         function colorpicker:Get()
-            return {Color = Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3]), Transparency = colorpicker.current[4]}
+            return Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3])
         end
         --
         library.began[#library.began + 1] = function(Input)
@@ -4459,14 +4442,6 @@ do
                             Position = utility:Position(0, 0, 0, 0, colorpicker_open_frame),
                             Color = theme.accent
                         }, colorpicker.holder.drawings)
-                        --
-                        local accent_connection accent_connection = rs.RenderStepped:Connect(function()
-                            if colorpicker.open then
-                                colorpicker_open_accent.Color = theme.accent
-                            else
-                                accent_connection:Disconnect()
-                            end
-                        end)
                         --
                         local colorpicker_title = utility:Create("TextLabel", {Vector2.new(4,2), colorpicker_open_frame}, {
                             Text = cpinfo,
@@ -4649,7 +4624,7 @@ do
             end
         end
         --
-        library.changed[#library.changed + 1] = function(Input)
+        library.changed[#library.changed + 1] = function()
             if colorpicker.open and colorpicker.holding.picker or colorpicker.holding.huepicker or colorpicker.holding.transparency then
                 if window.isVisible then
                     colorpicker:Refresh()
@@ -4663,14 +4638,6 @@ do
                     if colorpicker.holding.transparency then
                         colorpicker.holding.transparency = not colorpicker.holding.transparency
                     end
-                end
-            end
-            if Input.UserInputType == Enum.UserInputType.MouseMovement and colorpicker_outline.Visible and window.isVisible then
-                if utility:MouseOverDrawing({section.section_frame.Position.X, section.section_frame.Position.Y + colorpicker.axis, section.section_frame.Position.X + section.section_frame.Size.X - (colorpicker.secondColorpicker and (30+4) or 0), section.section_frame.Position.Y + colorpicker.axis + 15}) and not window:IsOverContent() then
-                    local h, s, v = theme.accent:ToHSV()
-                    colorpicker_inline.Color = Color3.fromHSV(h, 0.44, v)
-                else
-                    colorpicker_inline.Color = theme.inline
                 end
             end
         end
@@ -4743,18 +4710,10 @@ do
             --
             function colorpicker:Set(color, transp_val)
                 if typeof(color) == "table" then
-                    if color.Color and color.Transparency then
-                        local h, s, v = table.unpack(color.Color)
-                        colorpicker.current = {h, s, v , color.Transparency}
-                        colorpicker_frame.Color = Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3])
-                        colorpicker_frame.Transparency = 1 - colorpicker.current[4]
-                        callback(Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3]), colorpicker.current[4])
-                    else
-                        colorpicker.current = color
-                        colorpicker_frame.Color = Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3])
-                        colorpicker_frame.Transparency = 1 - colorpicker.current[4]
-                        callback(Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3]), colorpicker.current[4])
-                    end
+                    colorpicker.current = color
+                    colorpicker_frame.Color = Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3])
+                    colorpicker_frame.Transparency = 1 - colorpicker.current[4]
+                    callback(Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3]), colorpicker.current[4])
                 elseif typeof(color) == "color3" then
                     local h, s, v = color:ToHSV()
                     colorpicker.current = {h, s, v, (transp_val or 0)}
@@ -4816,7 +4775,7 @@ do
             end
             --
             function colorpicker:Get()
-                return {Color = Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3]), Transparency = colorpicker.current[4]}
+                return Color3.fromHSV(colorpicker.current[1], colorpicker.current[2], colorpicker.current[3])
             end
             --
             library.began[#library.began + 1] = function(Input)
@@ -5042,7 +5001,7 @@ do
                 end
             end
             --
-            library.changed[#library.changed + 1] = function(Input)
+            library.changed[#library.changed + 1] = function()
                 if colorpicker.open and colorpicker.holding.picker or colorpicker.holding.huepicker or colorpicker.holding.transparency then
                     if window.isVisible then
                         colorpicker:Refresh()
@@ -5056,14 +5015,6 @@ do
                         if colorpicker.holding.transparency then
                             colorpicker.holding.transparency = not colorpicker.holding.transparency
                         end
-                    end
-                end
-                if Input.UserInputType == Enum.UserInputType.MouseMovement and colorpicker_outline.Visible and window.isVisible then
-                    if utility:MouseOverDrawing({section.section_frame.Position.X, section.section_frame.Position.Y + colorpicker.axis, section.section_frame.Position.X + section.section_frame.Size.X - (colorpicker.secondColorpicker and (30+4) or 0), section.section_frame.Position.Y + colorpicker.axis + 15}) and not window:IsOverContent() then
-                        local h, s, v = theme.accent:ToHSV()
-                        colorpicker_inline.Color = Color3.fromHSV(h, 0.44, v)
-                    else
-                        colorpicker_inline.Color = theme.inline
                     end
                 end
             end
