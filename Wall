@@ -1,7 +1,9 @@
 local Settings = {
     Enabled = false,
     Boxes = false,
+    BoxFill = false,
     Names = false,
+    HealthBar = false,
     Tracers = false,
     Chams = false,
     Font = "Plex",
@@ -32,7 +34,7 @@ local function ESP(v)
     Box.Color = Color3.new(255,255,255)
     Box.Thickness = 1
     Box.Transparency = 1
-    Box.Filled = false
+    Box.Filled = Settings.BoxFill
 
     local HealthBarOutline = Drawing.new("Square")
     HealthBarOutline.Thickness = 2.5
@@ -96,9 +98,14 @@ local function ESP(v)
                     Box.Size = Vector2.new(2500 / RootPosition.Z, HeadPosition.Y - LegPosition.Y)
                     Box.Position = Vector2.new(RootPosition.X - Box.Size.X / 2, RootPosition.Y - Box.Size.Y / 2)
                     Box.Visible = true
-                        
+                else
+                    BoxOutline.Visible = false
+                    Box.Visible = false
+                end
+                
+                if Settings.HealthBar then
                     HealthBarOutline.Size = Vector2.new(2, HeadPosition.Y - LegPosition.Y)
-                    HealthBarOutline.Position = BoxOutline.Position - Vector2.new(6,0)
+                    HealthBarOutline.Position = Box.Position - Vector2.new(6,0)
                     HealthBarOutline.Visible = true
     
                     HealthBar.Size = Vector2.new(2, (HeadPosition.Y - LegPosition.Y) / (v.Character.Humanoid.MaxHealth / math.clamp(v.Character.Humanoid.Health, 0,v.Character.Humanoid.MaxHealth)))
@@ -106,11 +113,10 @@ local function ESP(v)
                     HealthBar.Color = Color3.fromRGB(255 - 255 / (v.Character.Humanoid.MaxHealth / v.Character.Humanoid.Health), 255 / (v.Character.Humanoid.MaxHealth / v.Character.Humanoid.Health), 0)
                     HealthBar.Visible = true
                 else
-                    BoxOutline.Visible = false
-                    Box.Visible = false
                     HealthBarOutline.Visible = false
                     HealthBar.Visible = false
                 end
+
                 if Settings.Tracers then
                     if Settings.UnlockTracers then
                         Tracer.From = Vector2.new(mouse.X, mouse.Y + 36)
@@ -122,6 +128,7 @@ local function ESP(v)
                 else
                     Tracer.Visible = false
                 end
+
                 if Settings.Distance then
                     Distance.Text = "[" .. mathfloor((RootPart.Position - v.Character.HumanoidRootPart.Position).Magnitude) .. "m]"
                     Distance.Position = Vector2.new(LegPosition.X, LegPosition.Y + 15)
@@ -129,6 +136,7 @@ local function ESP(v)
                 else
                     Distance.Visible = false
                 end
+
                 if Settings.Name then
                     Name.Text = tostring(v.Name)
                     Name.Position = Vector2.new(workspace.Camera:WorldToViewportPoint(v.Character.Head.Position).X, workspace.Camera:WorldToViewportPoint(v.Character.Head.Position).Y - 30)
