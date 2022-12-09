@@ -1,4 +1,4 @@
-local Settings = {
+local ESPSettings = {
     Enabled = false,
     Boxes = false,
     BoxFill = false,
@@ -34,7 +34,7 @@ local function ESP(v)
     Box.Color = Color3.new(255,255,255)
     Box.Thickness = 1
     Box.Transparency = 1
-    Box.Filled = Settings.BoxFill
+    Box.Filled = ESPSettings.BoxFill
 
     local HealthBarOutline = Drawing.new("Square")
     HealthBarOutline.Thickness = 2.5
@@ -89,8 +89,8 @@ local function ESP(v)
             local HeadPosition = worldToViewportPoint(Camera, Head.Position + Vector3.new(0,0.5,0))
             local LegPosition = worldToViewportPoint(Camera, RootPart.Position - Vector3.new(0,3,0))
 
-            if onScreen and Settings.Enabled then
-                if Settings.Boxes then
+            if onScreen and ESPSettings.Enabled then
+                if ESPSettings.Boxes then
                     BoxOutline.Size = Vector2.new(2500 / RootPosition.Z, HeadPosition.Y - LegPosition.Y)
                     BoxOutline.Position = Vector2.new(RootPosition.X - BoxOutline.Size.X / 2, RootPosition.Y - BoxOutline.Size.Y / 2)
                     BoxOutline.Visible = true
@@ -98,13 +98,13 @@ local function ESP(v)
                     Box.Size = Vector2.new(2500 / RootPosition.Z, HeadPosition.Y - LegPosition.Y)
                     Box.Position = Vector2.new(RootPosition.X - Box.Size.X / 2, RootPosition.Y - Box.Size.Y / 2)
                     Box.Visible = true
-                    Box.Filled = Settings.BoxFill
+                    Box.Filled = ESPSettings.BoxFill
                 else
                     BoxOutline.Visible = false
                     Box.Visible = false
                 end
                 
-                if Settings.HealthBar then
+                if ESPSettings.HealthBar then
                     HealthBarOutline.Size = Vector2.new(2, HeadPosition.Y - LegPosition.Y)
                     HealthBarOutline.Position = Box.Position - Vector2.new(6,0)
                     HealthBarOutline.Visible = true
@@ -118,8 +118,8 @@ local function ESP(v)
                     HealthBar.Visible = false
                 end
 
-                if Settings.Tracers then
-                    if Settings.UnlockTracers then
+                if ESPSettings.Tracers then
+                    if ESPSettings.UnlockTracers then
                         Tracer.From = Vector2.new(mouse.X, mouse.Y + 36)
                     else
                         Tracer.From = Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y / 1)
@@ -130,7 +130,7 @@ local function ESP(v)
                     Tracer.Visible = false
                 end
 
-                if Settings.Distance then
+                if ESPSettings.Distance then
                     Distance.Text = "[" .. mathfloor((RootPart.Position - v.Character.HumanoidRootPart.Position).Magnitude) .. "m]"
                     Distance.Position = Vector2.new(LegPosition.X, LegPosition.Y + 15)
                     Distance.Visible = true
@@ -138,25 +138,25 @@ local function ESP(v)
                     Distance.Visible = false
                 end
 
-                if Settings.Name then
+                if ESPSettings.Name then
                     Name.Text = tostring(v.Name)
                     Name.Position = Vector2.new(workspace.Camera:WorldToViewportPoint(v.Character.Head.Position).X, workspace.Camera:WorldToViewportPoint(v.Character.Head.Position).Y - 30)
                     Name.Visible = true
-                    Name.Size = Settings.TextSize
-                    if Settings.Font == "UI" then
+                    Name.Size = ESPSettings.TextSize
+                    if ESPSettings.Font == "UI" then
                         Name.Font = 0
                         Gun.Font = 0
-                    elseif Settings.Font == "System" then
+                    elseif ESPSettings.Font == "System" then
                         Name.Font = 1
                         Gun.Font = 1
-                    elseif Settings.Font == "Plex" then
+                    elseif ESPSettings.Font == "Plex" then
                         Name.Font = 2
                         Gun.Font = 2
-                    elseif Settings.Font == "Monospace" then
+                    elseif ESPSettings.Font == "Monospace" then
                         Name.Font = 3
                         Gun.Font = 3
                     end
-                    Gun.Size = Settings.TextSize
+                    Gun.Size = ESPSettings.TextSize
                     Gun.Text = tostring("catgirls on top <3")
                     Gun.Position = Vector2.new(LegPosition.X, LegPosition.Y + 10)
                     Gun.Visible = true
