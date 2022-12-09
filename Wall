@@ -1,4 +1,4 @@
-local ESP = {
+local Settings = {
     Enabled = false,
     Boxes = false,
     Names = false,
@@ -87,8 +87,8 @@ local function ESP(v)
             local HeadPosition = worldToViewportPoint(Camera, Head.Position + Vector3.new(0,0.5,0))
             local LegPosition = worldToViewportPoint(Camera, RootPart.Position - Vector3.new(0,3,0))
 
-            if onScreen and ESP.Enabled then
-                if ESP.Boxes then
+            if onScreen and Settings.Enabled then
+                if Settings.Boxes then
                     BoxOutline.Size = Vector2.new(2500 / RootPosition.Z, HeadPosition.Y - LegPosition.Y)
                     BoxOutline.Position = Vector2.new(RootPosition.X - BoxOutline.Size.X / 2, RootPosition.Y - BoxOutline.Size.Y / 2)
                     BoxOutline.Visible = true
@@ -111,8 +111,8 @@ local function ESP(v)
                     HealthBarOutline.Visible = false
                     HealthBar.Visible = false
                 end
-                if ESP.Tracers then
-                    if ESP.UnlockTracers then
+                if Settings.Tracers then
+                    if Settings.UnlockTracers then
                         Tracer.From = Vector2.new(mouse.X, mouse.Y + 36)
                     else
                         Tracer.From = Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y / 1)
@@ -122,32 +122,32 @@ local function ESP(v)
                 else
                     Tracer.Visible = false
                 end
-                if ESP.Distance then
+                if Settings.Distance then
                     Distance.Text = "[" .. mathfloor((RootPart.Position - v.Character.HumanoidRootPart.Position).Magnitude) .. "m]"
                     Distance.Position = Vector2.new(LegPosition.X, LegPosition.Y + 15)
                     Distance.Visible = true
                 else
                     Distance.Visible = false
                 end
-                if ESP.Name then
+                if Settings.Name then
                     Name.Text = tostring(v.Name)
                     Name.Position = Vector2.new(workspace.Camera:WorldToViewportPoint(v.Character.Head.Position).X, workspace.Camera:WorldToViewportPoint(v.Character.Head.Position).Y - 30)
                     Name.Visible = true
-                    Name.Size = ESP.TextSize
-                    if ESP.Font == "UI" then
+                    Name.Size = Settings.TextSize
+                    if Settings.Font == "UI" then
                         Name.Font = 0
                         Gun.Font = 0
-                    elseif ESP.Font == "System" then
+                    elseif Settings.Font == "System" then
                         Name.Font = 1
                         Gun.Font = 1
-                    elseif ESP.Font == "Plex" then
+                    elseif Settings.Font == "Plex" then
                         Name.Font = 2
                         Gun.Font = 2
-                    elseif ESP.Font == "Monospace" then
+                    elseif Settings.Font == "Monospace" then
                         Name.Font = 3
                         Gun.Font = 3
                     end
-                    Gun.Size = ESP.TextSize
+                    Gun.Size = Settings.TextSize
                     Gun.Text = tostring("catgirls on top <3")
                     Gun.Position = Vector2.new(LegPosition.X, LegPosition.Y + 10)
                     Gun.Visible = true
