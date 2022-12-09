@@ -98,6 +98,7 @@ local function ESP(v)
                     Box.Size = Vector2.new(2500 / RootPosition.Z, HeadPosition.Y - LegPosition.Y)
                     Box.Position = Vector2.new(RootPosition.X - Box.Size.X / 2, RootPosition.Y - Box.Size.Y / 2)
                     Box.Visible = true
+                    Box.Filled = Settings.BoxFill
                 else
                     BoxOutline.Visible = false
                     Box.Visible = false
