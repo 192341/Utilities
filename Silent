@@ -442,7 +442,7 @@ if Aiming.Snapline and ClosestPlayer ~= nil then
 local Vector = Camera:worldToViewportPoint(ClosestPlayer.Character["HumanoidRootPart"].Position + (ClosestPlayer.Character["HumanoidRootPart"].Velocity * 0))
 
 Snapline.Visible = true
-Snapline.From = Vector2.new(Mouse.X, Mouse.Y + GuiInset(GuiService).Y)
+Snapline.From = Vector2.new(Mouse.X, Mouse.Y + GetGuiInset(GuiService).Y)
 Snapline.To = Vector2.new(Vector.X, Vector.Y)
 Snapline.Color = Aiming.SnaplineColor
 
